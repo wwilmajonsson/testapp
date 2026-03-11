@@ -21,12 +21,15 @@ let testData = {
 };
 
 // -----------------------------
-// Connect
+// Connect / Disconnect
 // -----------------------------
 connectBtn.addEventListener("click", () => {
   if (connection) {
     connection.close();
     connection = null;
+    buffer = "";
+    testRunning = false;
+    startBtn.textContent = "Start";
     statusText.textContent = "Disconnected";
     connectBtn.textContent = "Connect";
     return;
@@ -42,11 +45,22 @@ connectBtn.addEventListener("click", () => {
     statusText.textContent = "Connected";
     connectBtn.textContent = "Disconnect";
 
+    // Hantera inkommande data
     connection.on("data", d => {
       buffer += d;
       let lines = buffer.split("\n");
       buffer = lines.pop();
       lines.forEach(handleLine);
+    });
+
+    // Hantera disconnect
+    connection.on("close", () => {
+      connection = null;
+      buffer = "";
+      testRunning = false;
+      startBtn.textContent = "Start";
+      statusText.textContent = "Disconnected";
+      connectBtn.textContent = "Connect";
     });
   });
 });
@@ -68,41 +82,52 @@ startBtn.addEventListener("click", () => {
   if (!connection) return;
 
   if (!testRunning) {
+    // Starta test
     testRunning = true;
     testData.hr = [];
     testData.startTs = Date.now();
     connection.write("START\n");
+
     startBtn.textContent = "Stop";
     statusText.textContent = "Recording...";
   } else {
+    // Stoppa test
     testRunning = false;
     connection.write("STOP\n");
+
     startBtn.textContent = "Start";
     statusText.textContent = "Stopping...";
   }
 });
 
 // -----------------------------
-// Handle incoming data
+// Hantera inkommande rader
 // -----------------------------
 function handleLine(line) {
+  line = line.trim();
+  if (!line) return;
+
+  // HR‑data
   if (line.startsWith("DATA,HR")) {
-    let parts = line.split(",");
+    const parts = line.split(",");
+    if (parts.length < 5) return;
+
     testData.hr.push({
-      ms: parseInt(parts[2]),
-      bpm: parseInt(parts[3]),
-      conf: parseInt(parts[4])
+      ms: Number(parts[2]),
+      bpm: Number(parts[3]),
+      conf: Number(parts[4])
     });
   }
 
+  // STOPPED från klockan
   if (line === "STOPPED") {
     testData.endTs = Date.now();
 
     const filename = `${testNameInput.value || "hr_test"}_${Date.now()}.json`;
     const blob = new Blob([JSON.stringify(testData)], { type: "application/json" });
+
     saveAs(blob, filename);
 
     statusText.textContent = "Test finished";
   }
 }
-
