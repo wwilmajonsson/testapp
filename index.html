@@ -1,55 +1,35 @@
 <!DOCTYPE html>
 <html>
+  <body>
+    <button id="connectBtn">Connect</button>
+    <pre id="log"></pre>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.rawgit.com/kimeiga/bahunya/css/bahunya-0.1.1.css" />
-    <title>Bangle.js HRM Data Collection</title>
-</head>
+    <script src="https://www.puck-js.com/puck.js"></script>
+    <script>
+      const btn = document.getElementById("connectBtn");
+      const logEl = document.getElementById("log");
+      let buffer = "";
 
-<body>
+      function log(line) {
+        logEl.textContent += line + "\n";
+      }
 
-<h2 style="text-align: center;">HRM Data Collection Web App</h2>
+      btn.addEventListener("click", () => {
+        Puck.connect(c => {
+          if (!c) {
+            log("Failed to connect");
+            return;
+          }
+          log("Connected");
 
-<main>
-<article>
-
-    <h3 id="statusText">Not connected</h3>
-
-    <!-- CONNECT -->
-    <section style="margin-bottom: 20px;">
-        <button id="connectBtn">Connect</button>
-    </section>
-
-    <!-- HRM CHECKBOX -->
-    <section style="margin-bottom: 20px;">
-        <label>
-            <input type="checkbox" id="hrCheckbox">
-            Enable HRM Sensor
-        </label>
-    </section>
-
-    <!-- TEST NAME -->
-    <section style="margin-bottom: 20px;">
-        <label>
-            Test name:
-            <input type="text" id="testName" placeholder="e.g. hr_test1">
-        </label>
-    </section>
-
-    <!-- START / STOP -->
-    <section style="margin-bottom: 20px;">
-        <button id="startBtn">Start</button>
-        <button id="stopBtn">Stop</button>
-    </section>
-
-</article>
-</main>
-
-<script src="https://www.puck-js.com/puck.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-<script src="testapp.js"></script>
-
-</body>
+          c.on("data", d => {
+            buffer += d;
+            let lines = buffer.split("\n");
+            buffer = lines.pop();
+            lines.forEach(l => log("RX: " + l.trim()));
+          });
+        });
+      });
+    </script>
+  </body>
 </html>
