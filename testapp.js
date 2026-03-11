@@ -4,6 +4,7 @@
 const connectBtn = document.getElementById("connectBtn");
 const hrCheckbox = document.getElementById("hrCheckbox");
 const startBtn = document.getElementById("startBtn");
+const stopBtn = document.getElementById("stopBtn");
 const statusText = document.getElementById("statusText");
 const testNameInput = document.getElementById("testName");
 
@@ -29,7 +30,6 @@ connectBtn.addEventListener("click", () => {
     connection = null;
     buffer = "";
     testRunning = false;
-    startBtn.textContent = "Start";
     statusText.textContent = "Disconnected";
     connectBtn.textContent = "Connect";
     return;
@@ -45,7 +45,7 @@ connectBtn.addEventListener("click", () => {
     statusText.textContent = "Connected";
     connectBtn.textContent = "Disconnect";
 
-    // Hantera inkommande data
+    // Ta emot data
     connection.on("data", d => {
       buffer += d;
       let lines = buffer.split("\n");
@@ -58,7 +58,6 @@ connectBtn.addEventListener("click", () => {
       connection = null;
       buffer = "";
       testRunning = false;
-      startBtn.textContent = "Start";
       statusText.textContent = "Disconnected";
       connectBtn.textContent = "Connect";
     });
@@ -71,33 +70,40 @@ connectBtn.addEventListener("click", () => {
 hrCheckbox.addEventListener("change", () => {
   if (!connection) return;
 
-  if (hrCheckbox.checked) connection.write("HR_ON\n");
-  else connection.write("HR_OFF\n");
+  if (hrCheckbox.checked) {
+    connection.write("HR_ON\n");
+    statusText.textContent = "HRM enabled";
+  } else {
+    connection.write("HR_OFF\n");
+    statusText.textContent = "HRM disabled";
+  }
 });
 
 // -----------------------------
-// Start/Stop
+// Start test
 // -----------------------------
 startBtn.addEventListener("click", () => {
   if (!connection) return;
 
-  if (!testRunning) {
-    // Starta test
-    testRunning = true;
-    testData.hr = [];
-    testData.startTs = Date.now();
-    connection.write("START\n");
+  testRunning = true;
+  testData.hr = [];
+  testData.startTs = Date.now();
 
-    startBtn.textContent = "Stop";
-    statusText.textContent = "Recording...";
-  } else {
-    // Stoppa test
-    testRunning = false;
-    connection.write("STOP\n");
+  connection.write("START\n");
 
-    startBtn.textContent = "Start";
-    statusText.textContent = "Stopping...";
-  }
+  statusText.textContent = "Recording...";
+});
+
+// -----------------------------
+// Stop test
+// -----------------------------
+stopBtn.addEventListener("click", () => {
+  if (!connection) return;
+
+  testRunning = false;
+  connection.write("STOP\n");
+
+  statusText.textContent = "Stopping...";
 });
 
 // -----------------------------
