@@ -164,6 +164,7 @@ pressureCheckbox.addEventListener("change", () => {
 
 });
 
+
 // -----------------------------
 // GPS CHECKBOX
 // -----------------------------
