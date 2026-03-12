@@ -6,6 +6,7 @@ const hrCheckbox = document.getElementById("hrCheckbox");
 const accCheckbox = document.getElementById("accCheckbox");
 const magCheckbox = document.getElementById("magCheckbox");
 const pressureCheckbox = document.getElementById("pressureCheckbox");
+const tempCheckbox = document.getElementById("tempCheckbox");
 const gpsCheckbox = document.getElementById("gpsCheckbox");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
@@ -26,6 +27,7 @@ let testData = {
   acc: [],
   mag: [],
   pressure: [],
+  temp: [],
   gps: []
 };
 
@@ -164,6 +166,27 @@ pressureCheckbox.addEventListener("change", () => {
 
 });
 
+// -----------------------------
+// TEMP CHECKBOX
+// -----------------------------
+tempCheckbox.addEventListener("change", () => {
+
+  if (!connection) return;
+
+  if (tempCheckbox.checked) {
+
+    connection.write("TEMP_ON\n");
+    statusText.textContent = "Temperature enabled";
+
+  } else {
+
+    connection.write("TEMP_OFF\n");
+    statusText.textContent = "Temperature disabled";
+
+  }
+
+});
+
 
 // -----------------------------
 // GPS CHECKBOX
@@ -203,6 +226,7 @@ startBtn.addEventListener("click", () => {
     acc: [],
     mag: [],
     pressure: [],
+    temp: [],
     gps: []
   };
 
@@ -294,6 +318,19 @@ function handleLine(line) {
     pressure: Number(parts[3]),
     altitude: Number(parts[4]),
     temp: Number(parts[5])
+  });
+
+}
+
+  if (line.startsWith("DATA,TEMP")) {
+
+  const parts = line.split(",");
+
+  if (parts.length < 4) return;
+
+  testData.temp.push({
+    ms: Number(parts[2]),
+    temperature: Number(parts[3])
   });
 
 }
