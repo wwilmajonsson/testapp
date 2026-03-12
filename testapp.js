@@ -4,6 +4,7 @@
 const connectBtn = document.getElementById("connectBtn");
 const hrCheckbox = document.getElementById("hrCheckbox");
 const accCheckbox = document.getElementById("accCheckbox");
+const magCheckbox = document.getElementById("magCheckbox");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 const statusText = document.getElementById("statusText");
@@ -20,7 +21,8 @@ let testData = {
   startTs: null,
   endTs: null,
   hr: [],
-  acc: []
+  acc: [],
+  mag: []
 };
 
 // -----------------------------
@@ -116,6 +118,27 @@ accCheckbox.addEventListener("change", () => {
 
 });
 
+// -----------------------------
+// MAG CHECKBOX
+// -----------------------------
+magCheckbox.addEventListener("change", () => {
+
+  if (!connection) return;
+
+  if (magCheckbox.checked) {
+
+    connection.write("MAG_ON\n");
+    statusText.textContent = "Mag enabled";
+
+  } else {
+
+    connection.write("MAG_OFF\n");
+    statusText.textContent = "Mag disabled";
+
+  }
+
+});
+
 
 // -----------------------------
 // START TEST
@@ -131,7 +154,8 @@ startBtn.addEventListener("click", () => {
     startTs: Date.now(),
     endTs: null,
     hr: [],
-    acc: []
+    acc: [],
+    mag: []
   };
 
   connection.write("START\n");
@@ -187,6 +211,22 @@ function handleLine(line) {
   if (parts.length < 6) return;
 
   testData.acc.push({
+    ms: Number(parts[2]),
+    x: Number(parts[3]),
+    y: Number(parts[4]),
+    z: Number(parts[5])
+  });
+
+}
+
+
+  if (line.startsWith("DATA,MAG")) {
+
+  const parts = line.split(",");
+
+  if (parts.length < 6) return;
+
+  testData.mag.push({
     ms: Number(parts[2]),
     x: Number(parts[3]),
     y: Number(parts[4]),
