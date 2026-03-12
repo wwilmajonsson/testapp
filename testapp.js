@@ -262,12 +262,13 @@ function handleLine(line) {
 
   const parts = line.split(",");
 
-  if (parts.length < 5) return;
+  if (parts.length < 6) return;
 
   testData.gps.push({
     ms: Number(parts[2]),
-    x: Number(parts[3]),
-    y: Number(parts[4]),
+    lat: Number(parts[3]),
+    lon: Number(parts[4]),
+    alt: Number(parts[5])
   });
 
 }
