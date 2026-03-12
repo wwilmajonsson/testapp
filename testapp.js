@@ -3,6 +3,7 @@
 // -----------------------------
 const connectBtn = document.getElementById("connectBtn");
 const hrCheckbox = document.getElementById("hrCheckbox");
+const accelCheckbox = document.getElementById("accelCheckbox");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 const statusText = document.getElementById("statusText");
@@ -18,7 +19,8 @@ let testRunning = false;
 let testData = {
   startTs: null,
   endTs: null,
-  hr: []
+  hr: [],
+  accel: []
 };
 
 // -----------------------------
@@ -92,6 +94,28 @@ hrCheckbox.addEventListener("change", () => {
   }
 
 });
+
+// -----------------------------
+// ACCEL CHECKBOX
+// -----------------------------
+accelCheckbox.addEventListener("change", () => {
+
+  if (!connection) return;
+
+  if (accelCheckbox.checked) {
+
+    connection.write("ACC_ON\n");
+    statusText.textContent = "Accelerometer enabled";
+
+  } else {
+
+    connection.write("ACC_OFF\n");
+    statusText.textContent = "Accelerometer disabled";
+
+  }
+
+});
+
 
 // -----------------------------
 // START TEST
