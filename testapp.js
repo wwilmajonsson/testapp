@@ -104,12 +104,12 @@ accelCheckbox.addEventListener("change", () => {
 
   if (accelCheckbox.checked) {
 
-    connection.write("ACC_ON\n");
+    connection.write("ACCEL_ON\n");
     statusText.textContent = "Accelerometer enabled";
 
   } else {
 
-    connection.write("ACC_OFF\n");
+    connection.write("ACCEL_OFF\n");
     statusText.textContent = "Accelerometer disabled";
 
   }
@@ -131,7 +131,7 @@ startBtn.addEventListener("click", () => {
     startTs: Date.now(),
     endTs: null,
     hr: [],
-    accel []
+    accel: []
   };
 
   connection.write("START\n");
