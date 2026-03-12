@@ -3,7 +3,7 @@
 // -----------------------------
 const connectBtn = document.getElementById("connectBtn");
 const hrCheckbox = document.getElementById("hrCheckbox");
-const accelCheckbox = document.getElementById("accelCheckbox");
+const accCheckbox = document.getElementById("accCheckbox");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 const statusText = document.getElementById("statusText");
@@ -20,7 +20,7 @@ let testData = {
   startTs: null,
   endTs: null,
   hr: [],
-  accel: []
+  acc: []
 };
 
 // -----------------------------
@@ -98,18 +98,18 @@ hrCheckbox.addEventListener("change", () => {
 // -----------------------------
 // ACCEL CHECKBOX
 // -----------------------------
-accelCheckbox.addEventListener("change", () => {
+accCheckbox.addEventListener("change", () => {
 
   if (!connection) return;
 
-  if (accelCheckbox.checked) {
+  if (accCheckbox.checked) {
 
-    connection.write("ACCEL_ON\n");
+    connection.write("ACC_ON\n");
     statusText.textContent = "Accelerometer enabled";
 
   } else {
 
-    connection.write("ACCEL_OFF\n");
+    connection.write("ACC_OFF\n");
     statusText.textContent = "Accelerometer disabled";
 
   }
@@ -131,7 +131,7 @@ startBtn.addEventListener("click", () => {
     startTs: Date.now(),
     endTs: null,
     hr: [],
-    accel: []
+    acc: []
   };
 
   connection.write("START\n");
@@ -186,7 +186,7 @@ function handleLine(line) {
 
   if (parts.length < 6) return;
 
-  testData.accel.push({
+  testData.acc.push({
     ms: Number(parts[2]),
     x: Number(parts[3]),
     y: Number(parts[4]),
