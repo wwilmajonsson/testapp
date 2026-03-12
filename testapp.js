@@ -179,6 +179,21 @@ function handleLine(line) {
 
   }
 
+  if (line.startsWith("DATA,ACC")) {
+
+  const parts = line.split(",");
+
+  if (parts.length < 6) return;
+
+  testData.acc.push({
+    ms: Number(parts[2]),
+    x: Number(parts[3]),
+    y: Number(parts[4]),
+    z: Number(parts[5])
+  });
+
+}
+
   if (line === "STOPPED") {
 
     testRunning = false;
