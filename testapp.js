@@ -5,7 +5,7 @@ const connectBtn = document.getElementById("connectBtn");
 const hrCheckbox = document.getElementById("hrCheckbox");
 const accCheckbox = document.getElementById("accCheckbox");
 const magCheckbox = document.getElementById("magCheckbox");
-const barCheckbox = document.getElementById("barCheckbox");
+const pressureCheckbox = document.getElementById("pressureCheckbox");
 const gpsCheckbox = document.getElementById("gpsCheckbox");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
@@ -25,7 +25,7 @@ let testData = {
   hr: [],
   acc: [],
   mag: [],
-  bar: [],
+  pressure: [],
   gps: []
 };
 
@@ -144,13 +144,13 @@ magCheckbox.addEventListener("change", () => {
 });
 
 // -----------------------------
-// BAR CHECKBOX
+// pressure CHECKBOX
 // -----------------------------
-barCheckbox.addEventListener("change", () => {
+pressureCheckbox.addEventListener("change", () => {
 
   if (!connection) return;
 
-  if (barCheckbox.checked) {
+  if (pressureCheckbox.checked) {
 
     connection.write("pressure_ON\n");
     statusText.textContent = "Pressure enabled";
@@ -201,7 +201,7 @@ startBtn.addEventListener("click", () => {
     hr: [],
     acc: [],
     mag: [],
-    bar: [],
+    pressure: [],
     gps: []
   };
 
