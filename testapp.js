@@ -152,13 +152,13 @@ barCheckbox.addEventListener("change", () => {
 
   if (barCheckbox.checked) {
 
-    connection.write("BAR_ON\n");
-    statusText.textContent = "BAR enabled";
+    connection.write("pressure_ON\n");
+    statusText.textContent = "Pressure enabled";
 
   } else {
 
-    connection.write("BAR_OFF\n");
-    statusText.textContent = "BAR disabled";
+    connection.write("pressure_OFF\n");
+    statusText.textContent = "Pressure disabled";
 
   }
 
@@ -282,17 +282,17 @@ function handleLine(line) {
 
 }
 
-  if (line.startsWith("DATA,BSR")) {
+  if (line.startsWith("DATA,pressure")) {
 
   const parts = line.split(",");
 
   if (parts.length < 6) return;
 
-  testData.bar.push({
+  testData.pressure.push({
     ms: Number(parts[2]),
-    x: Number(parts[3]),
-    y: Number(parts[4]),
-    z: Number(parts[5])
+    pressure: Number(parts[3]),
+    altitude: Number(parts[4]),
+    temp: Number(parts[5])
   });
 
 }
