@@ -5,6 +5,7 @@ const connectBtn = document.getElementById("connectBtn");
 const hrCheckbox = document.getElementById("hrCheckbox");
 const accCheckbox = document.getElementById("accCheckbox");
 const magCheckbox = document.getElementById("magCheckbox");
+const gpsCheckbox = document.getElementById("gpsCheckbox");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 const statusText = document.getElementById("statusText");
@@ -22,7 +23,8 @@ let testData = {
   endTs: null,
   hr: [],
   acc: [],
-  mag: []
+  mag: [],
+  gps: []
 };
 
 // -----------------------------
@@ -139,6 +141,26 @@ magCheckbox.addEventListener("change", () => {
 
 });
 
+// -----------------------------
+// GPS CHECKBOX
+// -----------------------------
+gpsCheckbox.addEventListener("change", () => {
+
+  if (!connection) return;
+
+  if (gpsCheckbox.checked) {
+
+    connection.write("GPS_ON\n");
+    statusText.textContent = "GPS enabled";
+
+  } else {
+
+    connection.write("GPS_OFF\n");
+    statusText.textContent = "GPS disabled";
+
+  }
+
+});
 
 // -----------------------------
 // START TEST
@@ -155,7 +177,8 @@ startBtn.addEventListener("click", () => {
     endTs: null,
     hr: [],
     acc: [],
-    mag: []
+    mag: [],
+    gps: []
   };
 
   connection.write("START\n");
@@ -231,6 +254,20 @@ function handleLine(line) {
     x: Number(parts[3]),
     y: Number(parts[4]),
     z: Number(parts[5])
+  });
+
+}
+
+  if (line.startsWith("DATA,GPS")) {
+
+  const parts = line.split(",");
+
+  if (parts.length < 5) return;
+
+  testData.gps.push({
+    ms: Number(parts[2]),
+    x: Number(parts[3]),
+    y: Number(parts[4]),
   });
 
 }
