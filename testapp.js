@@ -5,6 +5,7 @@ const connectBtn = document.getElementById("connectBtn");
 const hrCheckbox = document.getElementById("hrCheckbox");
 const accCheckbox = document.getElementById("accCheckbox");
 const magCheckbox = document.getElementById("magCheckbox");
+const barCheckbox = document.getElementById("barCheckbox");
 const gpsCheckbox = document.getElementById("gpsCheckbox");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
@@ -24,6 +25,7 @@ let testData = {
   hr: [],
   acc: [],
   mag: [],
+  bar: [],
   gps: []
 };
 
@@ -142,6 +144,27 @@ magCheckbox.addEventListener("change", () => {
 });
 
 // -----------------------------
+// BAR CHECKBOX
+// -----------------------------
+barCheckbox.addEventListener("change", () => {
+
+  if (!connection) return;
+
+  if (barCheckbox.checked) {
+
+    connection.write("BAR_ON\n");
+    statusText.textContent = "BAR enabled";
+
+  } else {
+
+    connection.write("BAR_OFF\n");
+    statusText.textContent = "BAR disabled";
+
+  }
+
+});
+
+// -----------------------------
 // GPS CHECKBOX
 // -----------------------------
 gpsCheckbox.addEventListener("change", () => {
@@ -178,6 +201,7 @@ startBtn.addEventListener("click", () => {
     hr: [],
     acc: [],
     mag: [],
+    bar: [],
     gps: []
   };
 
@@ -250,6 +274,21 @@ function handleLine(line) {
   if (parts.length < 6) return;
 
   testData.mag.push({
+    ms: Number(parts[2]),
+    x: Number(parts[3]),
+    y: Number(parts[4]),
+    z: Number(parts[5])
+  });
+
+}
+
+  if (line.startsWith("DATA,BSR")) {
+
+  const parts = line.split(",");
+
+  if (parts.length < 6) return;
+
+  testData.bar.push({
     ms: Number(parts[2]),
     x: Number(parts[3]),
     y: Number(parts[4]),
