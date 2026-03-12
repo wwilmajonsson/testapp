@@ -130,7 +130,8 @@ startBtn.addEventListener("click", () => {
   testData = {
     startTs: Date.now(),
     endTs: null,
-    hr: []
+    hr: [],
+    accel []
   };
 
   connection.write("START\n");
