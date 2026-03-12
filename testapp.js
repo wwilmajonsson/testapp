@@ -185,7 +185,7 @@ function handleLine(line) {
 
   if (parts.length < 6) return;
 
-  testData.acc.push({
+  testData.accel.push({
     ms: Number(parts[2]),
     x: Number(parts[3]),
     y: Number(parts[4]),
