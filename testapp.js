@@ -234,7 +234,7 @@ startBtn.addEventListener("click", () => {
   const period = Number(samplingPeriodInput.value) || 0;
 
 //send samplingperiod
-  connection.write('SET_PERIOD,${period}\n');
+  connection.write("SET_PERIOD,${period}\n");
   
   connection.write("START\n");
 
