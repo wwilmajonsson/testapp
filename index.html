@@ -30,45 +30,24 @@
 
 
      <!-- RAW DATA -->
-   <section style="margin-bottom: 20px;">
-       <label>
-           <input type="checkbox" id="hrCheckbox">
-           Enable HRM Sensor
-       </label>
-      <br>
-       <label>
-          <input type="checkbox" id="accCheckbox">
-           Enable ACCEL Sensor
-      </label>
-        <br>
-      <label>
-          <input type="checkbox" id="stepCheckbox">
-           Enable STEP Sensor
-      </label>
-       <br>
-      </section>
-       
-   <section style="margin-bottom: 20px;">
-       <label>
-          <input type="checkbox" id="magCheckbox">
-           Enable MAG Sensor
-      </label>
-      <br>
-       <label>
-          <input type="checkbox" id="pressureCheckbox">
-           Enable BAR Sensor
-      </label>
-       <br>
-       <label>
-          <input type="checkbox" id="tempCheckbox">
-           Enable TEMP Sensor
-      </label>
-      <br>
-       <label>
-          <input type="checkbox" id="gpsCheckbox">
-           Enable GPS Sensor
-      </label>
-   </section>
+<div style="display: flex; gap: 40px;">
+
+  <!-- VÄNSTER KOLUMN (4 sensorer) -->
+  <section>
+    <label><input type="checkbox" id="hrCheckbox"> Enable HRM Sensor</label><br>
+    <label><input type="checkbox" id="accCheckbox"> Enable ACCEL Sensor</label><br>
+    <label><input type="checkbox" id="stepCheckbox"> Enable STEP Sensor</label><br>
+    <label><input type="checkbox" id="magCheckbox"> Enable MAG Sensor</label><br>
+  </section>
+
+  <!-- HÖGER KOLUMN (3 sensorer) -->
+  <section>
+    <label><input type="checkbox" id="pressureCheckbox"> Enable BAR Sensor</label><br>
+    <label><input type="checkbox" id="tempCheckbox"> Enable TEMP Sensor</label><br>
+    <label><input type="checkbox" id="gpsCheckbox"> Enable GPS Sensor</label><br>
+  </section>
+
+</div>
 
 
       <!-- AGG DATA -->
