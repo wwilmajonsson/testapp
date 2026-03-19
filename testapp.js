@@ -4,6 +4,7 @@
 const connectBtn = document.getElementById("connectBtn");
 const hrCheckbox = document.getElementById("hrCheckbox");
 const accCheckbox = document.getElementById("accCheckbox");
+const stepCheckbox = document.getElementById("stepCheckbox");
 const magCheckbox = document.getElementById("magCheckbox");
 const pressureCheckbox = document.getElementById("pressureCheckbox");
 const tempCheckbox = document.getElementById("tempCheckbox");
@@ -26,6 +27,7 @@ let testData = {
   endTs: null,
   hr: [],
   acc: [],
+  steps: [],
   mag: [],
   pressure: [],
   temp: [],
@@ -120,6 +122,27 @@ accCheckbox.addEventListener("change", () => {
 
     connection.write("ACC_OFF\n");
     statusText.textContent = "Accelerometer disabled";
+
+  }
+
+});
+
+// -----------------------------
+// STEPS CHECKBOX
+// -----------------------------
+stepCheckbox.addEventListener("change", () => {
+
+  if (!connection) return;
+
+  if (stepCheckbox.checked) {
+
+    connection.write("STEPS_ON\n");
+    statusText.textContent = "Steps enabled";
+
+  } else {
+
+    connection.write("STEPS_OFF\n");
+    statusText.textContent = "Steps disabled";
 
   }
 
@@ -225,6 +248,7 @@ startBtn.addEventListener("click", () => {
     endTs: null,
     hr: [],
     acc: [],
+    steps: [],
     mag: [],
     pressure: [],
     temp: [],
@@ -266,6 +290,7 @@ function handleLine(line) {
 
   console.log("RX:", line);
 
+  // HRM ---> RAW
   if (line.startsWith("DATA,HR")) {
 
     const parts = line.split(",");
@@ -282,6 +307,7 @@ function handleLine(line) {
 
   }
 
+   // HRM ---> AGG
   if (line.startsWith("AGG,HR")) {
 
     const parts = line.split(",");
@@ -299,6 +325,7 @@ function handleLine(line) {
 
   }
 
+   // ACC ---> RAW
   if (line.startsWith("DATA,ACC")) {
 
   const parts = line.split(",");
@@ -314,6 +341,7 @@ function handleLine(line) {
 
 }
 
+   // ACC ---> AGG
   if (line.startsWith("AGG,ACC")) {
 
   const parts = line.split(",");
@@ -330,7 +358,36 @@ function handleLine(line) {
 
 }
 
+// STEPS ---> RAW
+if (line.startsWith("DATA,STEP")) {
 
+  const parts = line.split(",");
+
+  if (parts.length < 4) return;
+
+  testData.steps.push({
+    ms: Number(parts[2]),
+    steps: Number(parts[3])
+  });
+}
+
+
+   // STEPS ---> AGG
+if (line.startsWith("AGG,STEP")) {
+
+  const parts = line.split(",");
+
+  if (parts.length < 4) return;
+
+  testData.steps.push({
+    ms: Number(parts[2]),
+    steps: Number(parts[3]),
+    aggregated: true
+  });
+}
+
+
+ // MAG ---> RAW
   if (line.startsWith("DATA,MAG")) {
 
   const parts = line.split(",");
@@ -345,6 +402,8 @@ function handleLine(line) {
   });
 
 }
+
+   // MAG ---> AGG
   if (line.startsWith("AGG,MAG")) {
 
   const parts = line.split(",");
@@ -361,6 +420,7 @@ function handleLine(line) {
 
 }
 
+   // BAR ---> RAW
   if (line.startsWith("DATA,pressure")) {
 
   const parts = line.split(",");
@@ -375,6 +435,8 @@ function handleLine(line) {
   });
 
 }
+
+   // BAR ---> AGG
   if (line.startsWith("AGG,pressure")) {
 
   const parts = line.split(",");
@@ -391,6 +453,7 @@ function handleLine(line) {
 
 }
 
+   // TEMP ---> RAW
   if (line.startsWith("DATA,TEMP")) {
 
   const parts = line.split(",");
@@ -403,6 +466,8 @@ function handleLine(line) {
   });
 
 }
+
+   // TEMP ---> AGG
   if (line.startsWith("AGG,TEMP")) {
 
   const parts = line.split(",");
@@ -417,6 +482,7 @@ function handleLine(line) {
 
 }
 
+   // GPS ---> RAW
   if (line.startsWith("DATA,GPS")) {
 
   const parts = line.split(",");
@@ -431,6 +497,8 @@ function handleLine(line) {
   });
 
 }
+
+   // GPS ---> AGG
   if (line.startsWith("AGG,GPS")) {
 
   const parts = line.split(",");
