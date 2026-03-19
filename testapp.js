@@ -350,6 +350,9 @@ function handleLine(line) {
 
 }
 
+// -----------------------------
+// HANDLE SAVING DATA
+// -----------------------------
   if (line === "STOPPED") {
 
     testRunning = false;
