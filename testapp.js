@@ -230,7 +230,12 @@ startBtn.addEventListener("click", () => {
     temp: [],
     gps: []
   };
+// read samplingperiod from input
+  const period = Number(samplingPeriodInput.value) || 0;
 
+//send samplingperiod
+  connection.write('SET_PERIOD,${period}\n');
+  
   connection.write("START\n");
 
   statusText.textContent = "Recording...";
@@ -277,6 +282,23 @@ function handleLine(line) {
 
   }
 
+  if (line.startsWith("AGG,HR")) {
+
+    const parts = line.split(",");
+
+    if (parts.length < 5) return;
+
+    testData.hr.push({
+
+      ms: Number(parts[2]),
+      bpm: Number(parts[3]),
+      conf: Number(parts[4]),
+      aggregated: true
+
+    });
+
+  }
+
   if (line.startsWith("DATA,ACC")) {
 
   const parts = line.split(",");
@@ -288,6 +310,22 @@ function handleLine(line) {
     x: Number(parts[3]),
     y: Number(parts[4]),
     z: Number(parts[5])
+  });
+
+}
+
+  if (line.startsWith("AGG,ACC")) {
+
+  const parts = line.split(",");
+
+  if (parts.length < 6) return;
+
+  testData.acc.push({
+    ms: Number(parts[2]),
+    x: Number(parts[3]),
+    y: Number(parts[4]),
+    z: Number(parts[5]),
+    aggregated: true
   });
 
 }
@@ -307,6 +345,21 @@ function handleLine(line) {
   });
 
 }
+  if (line.startsWith("AGG,MAG")) {
+
+  const parts = line.split(",");
+
+  if (parts.length < 6) return;
+
+  testData.mag.push({
+    ms: Number(parts[2]),
+    x: Number(parts[3]),
+    y: Number(parts[4]),
+    z: Number(parts[5]),
+    aggregated: true
+  });
+
+}
 
   if (line.startsWith("DATA,pressure")) {
 
@@ -319,6 +372,21 @@ function handleLine(line) {
     pressure: Number(parts[3]),
     altitude: Number(parts[4]),
     temp: Number(parts[5])
+  });
+
+}
+  if (line.startsWith("AGG,pressure")) {
+
+  const parts = line.split(",");
+
+  if (parts.length < 6) return;
+
+  testData.pressure.push({
+    ms: Number(parts[2]),
+    pressure: Number(parts[3]),
+    altitude: Number(parts[4]),
+    temp: Number(parts[5]),
+    aggregated: true
   });
 
 }
@@ -335,6 +403,19 @@ function handleLine(line) {
   });
 
 }
+  if (line.startsWith("AGG,TEMP")) {
+
+  const parts = line.split(",");
+
+  if (parts.length < 4) return;
+
+  testData.temp.push({
+    ms: Number(parts[2]),
+    temperature: Number(parts[3]),
+    aggregated: true
+  });
+
+}
 
   if (line.startsWith("DATA,GPS")) {
 
@@ -347,6 +428,21 @@ function handleLine(line) {
     lat: Number(parts[3]),
     lon: Number(parts[4]),
     alt: Number(parts[5])
+  });
+
+}
+  if (line.startsWith("AGG,GPS")) {
+
+  const parts = line.split(",");
+
+  if (parts.length < 6) return;
+
+  testData.gps.push({
+    ms: Number(parts[2]),
+    lat: Number(parts[3]),
+    lon: Number(parts[4]),
+    alt: Number(parts[5]),
+    aggregated: true
   });
 
 }
