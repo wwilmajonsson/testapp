@@ -9,25 +9,19 @@
    <title>Bangle.js Data Collection</title>
 </head>
 
-
 <body>
 
-
 <h2 style="text-align: center;">Data Collection Web App</h2>
-
 
 <main>
 <article>
 
-
    <h3 id="statusText">Not connected</h3>
-
 
    <!-- CONNECT -->
    <section style="margin-bottom: 20px;">
        <button id="connectBtn">Connect</button>
    </section>
-
 
      <!-- RAW DATA -->
 <div style="display: flex; gap: 40px;">
@@ -52,32 +46,25 @@
 
       <!-- AGG DATA -->
    <section style="margin-bottom: 20px;">
-     <h3><b>Aggregated data</b></h3>
-      <br>
-      <label>
-           Interval (milisec):
-           <input type="text" id="samplingPeriod" placeholder="e.g. 1800">
-       </label>
+      <label>Interval (milisec):<input type="text" id="samplingPeriod" placeholder="e.g. 1800"></label>
    </section>
    
 
+<!-- TEST NAME -->
+<section style="margin-bottom: 20px;">
+  <h3><b>File name</b></h3>
 
-   <!-- TEST NAME -->
-   <section style="margin-bottom: 20px;">
-      <h3><b>File name</b></h3>
-      <br>
-       <label>
-           Test name:
-           <input type="text" id="testName" placeholder="e.g. hr_test1">
-       </label>
-   </section>
+  <label>
+    Test name:
+    <input type="text" id="testName" placeholder="e.g. hr_test1">
+  </label>
+</section>
 
-
-   <!-- START / STOP -->
-   <section style="margin-bottom: 20px;">
-       <button id="startBtn">Start</button>
-       <button id="stopBtn">Stop</button>
-   </section>
+<!-- START / STOP -->
+<section style="margin-bottom: 20px;">
+  <button id="startBtn">Start</button>
+  <button id="stopBtn">Stop</button>
+</section>
 
 
 </article>
