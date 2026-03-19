@@ -12,6 +12,7 @@ const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 const statusText = document.getElementById("statusText");
 const testNameInput = document.getElementById("testName");
+const samplingPeriodInput = document.getElementById("samplingPeriod");
 
 // -----------------------------
 // VARIABLES
