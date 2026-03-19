@@ -29,7 +29,7 @@
    </section>
 
 
-  
+     <!-- RAW DATA -->
    <section style="margin-bottom: 20px;">
        <h3><b>Raw data</b></h3>
         <button id="rawBtn">Raw data</button>
@@ -65,16 +65,24 @@
       </label>
    </section>
 
+
+      <!-- AGG DATA -->
    <section style="margin-bottom: 20px;">
      <h3><b>Aggregated data</b></h3>
       <button id="aggBtn">Aggregated data</button>
       <br>
+      <label>
+           Interval (milisec):
+           <input type="text" id="samplingPeriod" placeholder="e.g. 1800">
+       </label>
    </section>
    
 
 
    <!-- TEST NAME -->
    <section style="margin-bottom: 20px;">
+      <h3><b>File name</b></h3>
+      <br>
        <label>
            Test name:
            <input type="text" id="testName" placeholder="e.g. hr_test1">
