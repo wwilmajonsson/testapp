@@ -13,7 +13,7 @@ const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 const statusText = document.getElementById("statusText");
 const testNameInput = document.getElementById("testName");
-const samplingPeriodInput = document.getElementById("samplingPeriod");
+
 
 // -----------------------------
 // VARIABLES
@@ -254,12 +254,6 @@ startBtn.addEventListener("click", () => {
     temp: [],
     gps: []
   };
-// read samplingperiod from input
-  const period = Number(samplingPeriodInput.value) || 0;
-
-//send samplingperiod
-  connection.write(`SET_PERIOD,${period}\n`);
-  
   connection.write("START\n");
 
   statusText.textContent = "Recording...";
